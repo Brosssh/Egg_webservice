@@ -3,7 +3,6 @@ from Server.server_manager import server
 
 
 def insert_eid_api(EID,mongo):
-    EID=EID.decode("utf-8")
     try:
         server_manager = server()
         result = server_manager.get_bot_first_contact(EID)
