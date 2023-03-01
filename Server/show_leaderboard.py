@@ -77,11 +77,14 @@ def get_table_top_n(table, n):
 
 
 def get_leader(mongo, obj, number, top_n):
-    if obj == "gold" or obj == "titanium" or obj == "tau":
-        table, header = __get_leader_arrays_ingr__(mongo, obj, number)
-    else:
-        table, header = __get_leader_arrays_stone__(mongo, obj, number)
-    new_table = get_table_top_n(table, top_n)
-    return new_table[:number]
+    try:
+        if obj == "gold" or obj == "titanium" or obj == "tau":
+            table, header = __get_leader_arrays_ingr__(mongo, obj, number)
+        else:
+            table, header = __get_leader_arrays_stone__(mongo, obj, number)
+        new_table = get_table_top_n(table, top_n)
+        return new_table[:number]
+    except Exception as e:
+        return e
 
 
