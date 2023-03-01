@@ -2,7 +2,6 @@ from Server import show_leaderboard
 from Server import utiliy
 from Server.server_manager import server
 
-
 def insert_eid_api(EID,mongo):
     if mongo is None:
         return {"success": False, "code": -4, "content": "Unable to contact mongo"}
