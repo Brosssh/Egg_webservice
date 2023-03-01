@@ -1,6 +1,3 @@
-from tabulate import tabulate
-
-
 def __get_leader_arrays_ingr__(mongo, obj, ship_num):
     header = ["Pos", "Name", "Stars", "Capacity", "T1", "T2", "T3", "Total " + obj]
     table = []
@@ -60,10 +57,6 @@ def __get_leader_arrays_stone__(mongo, obj, ship_num):
 
     return table, header
 
-
-def __get_leader_crafts__(mongo, obj, number):
-    header = ["Pos", "Name", "T2", "T3", "T4"]
-    table = []
 
 
 # top n ships for users
