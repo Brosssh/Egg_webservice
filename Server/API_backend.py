@@ -2,7 +2,7 @@
 from Server import show_leaderboard
 from Server import utiliy
 from Server.server_manager import server
-from log_manager import api_logger
+from Server.log_manager import api_logger
 
 
 def insert_eid_api(EID,mongo):
