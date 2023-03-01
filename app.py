@@ -14,6 +14,7 @@ mongo = mongo_manager(conn)
 
 app = Flask(__name__)
 
+
 @app.route('/sendNewEID', methods=["GET"])
 def newEID():
     EID=str(request.args.get('EID'))
