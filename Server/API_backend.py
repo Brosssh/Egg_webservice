@@ -1,3 +1,5 @@
+import threading
+from Server import insert_EID
 from Server import show_leaderboard
 from Server import utiliy
 from Server.server_manager import server
@@ -17,8 +19,11 @@ def insert_eid_api(EID,mongo):
             return {"success":False,"code":-2,"content":"EID is not valid for some reason"}
         else:
             name=result.backup.user_name
-
-            return {"success": True, "code": 1, "content": name} if mongo.get_full_from_eid(utiliy.encrypt_string(EID))is not None else {"success": True, "code": 0, "content": name}
+            encypted_EID=utiliy.encrypt_string(EID)
+            do_exist=mongo.user_exists(encypted_EID)
+            t=threading.Thread(target=insert_EID.insert,args=(server_manager,mongo,result,encypted_EID,do_exist))
+            t.start()
+            return {"success": True, "code": 1, "content": "Thanks "+name+", your ships are being updated... Check the leaderboard in a couple of minutes"} if do_exist is not None else {"success": True, "code": 2, "content": "Thanks for your submission "+name+". Since it's your first submission it will take some time, check back the leaderboard in some minutes"}
     except Exception as e:
         return {"success": False, "code": -1, "content": str(e)}
 

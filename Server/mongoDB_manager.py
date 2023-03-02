@@ -100,6 +100,7 @@ class mongo_manager:
             self.__get_collection__().insert_one(doc)
             return to_return
         else:
+            print("No new ships")
             return None
 
     def get_leaderboard_stone_ingr(self):
