@@ -23,7 +23,7 @@ def insert_eid_api(EID,mongo):
             do_exist=mongo.user_exists(encypted_EID)
             t=threading.Thread(target=insert_EID.insert,args=(server_manager,mongo,result,encypted_EID,do_exist))
             t.start()
-            return {"success": True, "code": 1, "content": name} if do_exist is not None else {"success": True, "code": 2, "content": name}
+            return {"success": True, "code": 1, "content": "Thanks "+name+", your ships are being updated... Check the leaderboard in a couple of minutes"} if do_exist is not None else {"success": True, "code": 2, "content": "Thanks for your submission "+name+". Since it's your first submission it will take some time, check back the leaderboard in some minutes"}
     except Exception as e:
         return {"success": False, "code": -1, "content": str(e)}
 
