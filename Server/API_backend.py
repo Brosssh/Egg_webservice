@@ -72,7 +72,7 @@ def get_personal_leaderboard(mongo, EID):
         if not mongo.user_exists(encypted_EID):
             return {"success": False, "code": -4, "content": "You need to first submit your EID in order to view your dashboard"}
 
-        return show_personal_leaderboard.calculate_pers_dash(mongo,encypted_EID)
+        return {"success": True, "code": 1, "content": show_personal_leaderboard.calculate_pers_dash(mongo,encypted_EID)}
 
     except Exception as e:
         return {"success": False, "code": -1, "content": str(e)}
