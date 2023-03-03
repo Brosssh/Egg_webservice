@@ -5,6 +5,12 @@
 			"use": "@vercel/python"
 		}
 	],
+	"rewrites": [
+		{
+			"source": "/(.*)",
+			"destination": "app.py"
+		}
+	],
 	"headers": [
 		{
 			"source": "/(.*)",
