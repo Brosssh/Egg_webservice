@@ -188,10 +188,13 @@ class mongo_manager:
                         result.append(el)
                         result.append(str(i+1))
                         for key  in leaderboard[str(i+1)].keys():
-                            if key!="identifier" and key!="count":
+                            if key!="identifier" and key!="count"and key!="name":
                                 result.append(leaderboard[str(i+1)][key][j])
                             if key=="count":
                                 for count_el in leaderboard[str(i+1)][key][j].values():
                                     result.append(str(count_el))
+
+                        if len(result)==8:#tau gold and titanium are 1 less long since to t4
+                            result.insert(7,"X")
                         print("Finish " + el)
                         return result
