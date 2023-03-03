@@ -1,6 +1,6 @@
 import threading
 
-import show_personal_leaderboard
+from Server import show_personal_leaderboard
 from Server import insert_EID
 from Server import show_leaderboard
 from Server import utiliy
