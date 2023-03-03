@@ -1,29 +1,33 @@
 import threading
+
+import show_personal_leaderboard
 from Server import insert_EID
 from Server import show_leaderboard
 from Server import utiliy
 from Server.server_manager import server
 import logging
 
+def inizialize_EID(EID):
+    server_manager = server()
+    result = server_manager.get_bot_first_contact(EID)
+    if not result:
+        return {"success": False, "code": -3, "content": "Bad response by auxbrain"}
+    checksum = result.backup.checksum
+    if checksum == 0:
+        return {"success": False, "code": -2, "content": "The EID is not registered in egg server"}
+    return server_manager,result
 
 def insert_eid_api(EID,mongo):
     if mongo is None:
         return {"success": False, "code": -4, "content": "Unable to contact mongo"}
     try:
-        server_manager = server()
-        result = server_manager.get_bot_first_contact(EID)
-        if not result:
-            return {"success": False, "code": -3, "content": "EID not present on the server"}
-        checksum = result.backup.checksum
-        if checksum == 0:
-            return {"success":False,"code":-2,"content":"EID is not valid for some reason"}
-        else:
-            name=result.backup.user_name
-            encypted_EID=utiliy.encrypt_string(EID)
-            do_exist=mongo.user_exists(encypted_EID)
-            t=threading.Thread(target=insert_EID.insert,args=(server_manager,mongo,result,encypted_EID,do_exist))
-            t.start()
-            return {"success": True, "code": 1, "content": "Thanks "+name+", your ships are being updated... Check the leaderboard in a couple of minutes"} if do_exist is not None else {"success": True, "code": 2, "content": "Thanks for your submission "+name+". Since it's your first submission it will take some time, check back the leaderboard in some minutes"}
+        server_manager,result=inizialize_EID(EID)
+        name=result.backup.user_name
+        encypted_EID=utiliy.encrypt_string(EID)
+        do_exist=mongo.user_exists(encypted_EID)
+        t=threading.Thread(target=insert_EID.insert,args=(server_manager,mongo,result,encypted_EID,do_exist))
+        t.start()
+        return {"success": True, "code": 1, "content": "Thanks "+name+", your ships are being updated... Check the leaderboard in a couple of minutes"} if do_exist is not None else {"success": True, "code": 2, "content": "Thanks for your submission "+name+". Since it's your first submission it will take some time, check back the leaderboard in some minutes"}
     except Exception as e:
         return {"success": False, "code": -1, "content": str(e)}
 
@@ -52,5 +56,23 @@ def get_leaderboard(mongo, element, n, top_n):
         else:
             logging.warning(res)
             return {"success": False, "code": -1, "content": str(res)}
+    except Exception as e:
+        return {"success": False, "code": -1, "content": str(e)}
+
+
+def get_personal_leaderboard(mongo, EID):
+    try:
+        if EID is None:
+            return {"success": False, "code": 0, "content": "Please specify the EID"}
+        if mongo is None:
+            return {"success": False, "code": -4, "content": "Unable to contact mongo"}
+
+        server_manager, result = inizialize_EID(EID)
+        encypted_EID=utiliy.encrypt_string(EID)
+        if not mongo.user_exists(encypted_EID):
+            return {"success": False, "code": -4, "content": "You need to first submit your EID in order to view your dashboard"}
+
+        return show_personal_leaderboard.calculate_pers_dash(mongo,encypted_EID)
+
     except Exception as e:
         return {"success": False, "code": -1, "content": str(e)}
