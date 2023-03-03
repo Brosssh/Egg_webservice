@@ -173,3 +173,25 @@ class mongo_manager:
         except Exception as e:
             print(e)
 
+    def get_name_by_EID(self,EID):
+        return self.__get_collection__().find_one({"EID": EID}, {"name": 1})["name"]
+
+    def get_first_encounter(self,el,user_name):
+        print("Start " + el)
+        leaderboard=self.__get_leaderboard_coll__().find_one({"name":el})["content"]
+        result=[]
+        print("Leaderboard "+el+ " retrieved from mongo")
+        for i in range(len(leaderboard)+1):
+            if user_name in leaderboard[str(i+1)]["name"]:
+                for j in range(len(leaderboard[str(i+1)]["name"])):
+                    if leaderboard[str(i+1)]["name"][j]==user_name:
+                        result.append(el)
+                        result.append(str(i+1))
+                        for key  in leaderboard[str(i+1)].keys():
+                            if key!="identifier" and key!="count":
+                                result.append(leaderboard[str(i+1)][key][j])
+                            if key=="count":
+                                for count_el in leaderboard[str(i+1)][key][j].values():
+                                    result.append(str(count_el))
+                        print("Finish " + el)
+                        return result

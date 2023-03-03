@@ -32,3 +32,9 @@ def getlead():
     top_n = request.args.get('top_n')
     response=API_backend.get_leaderboard(mongo,element,n,top_n)
     return response
+
+@app.route('/getPersonalLeaderboard', methods=["GET"])
+def getperslead():
+    EID=request.args.get('EID')
+    response=API_backend.get_personal_leaderboard(mongo,EID)
+    return response
