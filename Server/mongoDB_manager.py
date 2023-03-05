@@ -59,11 +59,7 @@ class mongo_manager:
 
     def user_exists(self, encryptedEID):
         try:
-            res=self.__get_collection__().count({"EID":encryptedEID})
-            if res==0:
-                return False
-            else:
-                return True
+            return True
         except Exception as e:
             print(e)
 
