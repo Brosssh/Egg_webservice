@@ -59,7 +59,11 @@ class mongo_manager:
 
     def user_exists(self, encryptedEID):
         try:
-            return True
+            res= [el["EID"] for el in list(self.get_all_encrypted_IDs())]
+            if encryptedEID not in res:
+                return False
+            else:
+                return True
         except Exception as e:
             print(e)
 
