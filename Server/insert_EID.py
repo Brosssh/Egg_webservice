@@ -1,4 +1,5 @@
 import logging
+import datetime
 
 from Server.ships_functions import loots, semplify_dict, update_leaderboard
 
@@ -10,7 +11,7 @@ def insert(server,mongo,result,encrypted_EID,do_exist):
         dict_loots = semplify_dict(loot_dict)
         logging.info('New ships for EID : ' + encrypted_EID + " ,ships: " + str(len(dict_loots)))
         print('New ships for EID : ' + encrypted_EID + " ,ships: " + str(len(dict_loots)))
-        final_dict = {"EID": encrypted_EID, "name": result.backup.user_name, "ships": dict_loots}
+        final_dict = {"EID": encrypted_EID, "name": result.backup.user_name, "ships": dict_loots,"last_update_date":str(datetime.datetime.now())}
         new_ships = final_dict
         if not do_exist:
             mongo.insert_full_user_ships(final_dict)
