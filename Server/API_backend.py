@@ -1,11 +1,16 @@
 import threading
 
+from tqdm import tqdm
+
 from Server import show_personal_leaderboard
 from Server import insert_EID
 from Server import show_leaderboard
 from Server import utiliy
 from Server.server_manager import server
 import logging
+
+from ships_functions import update_leaderboard
+
 
 def inizialize_EID(EID):
     server_manager = server()
@@ -27,7 +32,7 @@ def insert_eid_api(EID,mongo):
         do_exist=mongo.user_exists(encypted_EID)
         t=threading.Thread(target=insert_EID.insert,args=(server_manager,mongo,result,encypted_EID,do_exist))
         t.start()
-        return {"success": True, "code": 1, "content": "Thanks "+name+", your ships are being updated... Check the leaderboard in a couple of minutes"} if do_exist is not None else {"success": True, "code": 2, "content": "Thanks for your submission "+name+". Since it's your first submission it will take some time, check back the leaderboard in some minutes"}
+        return {"success": True, "code": 1, "content": "Thanks "+name+", your ships are being updated... Check the leaderboard in a few minutes"} if do_exist is not None else {"success": True, "code": 2, "content": "Thanks for your submission "+name+". Since it's your first submission it will take some time, check back the leaderboard in some minutes"}
     except Exception as e:
         return {"success": False, "code": -1, "content": str(e)}
 
@@ -76,3 +81,15 @@ def get_personal_leaderboard(mongo, EID):
 
     except Exception as e:
         return {"success": False, "code": -1, "content": str(e)}
+
+def debug_only_reset_leaderboards(mongo):
+    only_value={"1":{'name': [], 'stars': [], 'capacity': [], 'identifier': [], 'count': [{'1': 0, '2': 0, '3': 0, '4': 0, 'total': 0}]}}
+    for el in utiliy.get_leaderboards_names_static():
+        mongo.load_updated_document_by_name(only_value,el)
+    for encrypted_EID in tqdm([el["EID"] for el in list(mongo.get_all_encrypted_IDs())]):
+        full_ships=mongo.get_full_from_eid(encrypted_EID)
+        leaderboard_dict = mongo.build_full_leaderboard()
+        print('Started leaderboard update EID : ' + encrypted_EID)
+        leaderboard_updated = update_leaderboard(leaderboard_dict, full_ships)
+        for el in leaderboard_updated:
+            mongo.load_updated_document_by_name(leaderboard_updated[el], el)
