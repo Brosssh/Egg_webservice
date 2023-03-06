@@ -15,10 +15,10 @@ def inizialize_EID(EID):
     server_manager = server()
     result = server_manager.get_bot_first_contact(EID)
     if not result:
-        return {"success": False, "code": -3, "content": "Bad response by auxbrain"}
+        return False,{"success": False, "code": -3, "content": "Bad response by auxbrain"}
     checksum = result.backup.checksum
     if checksum == 0:
-        return {"success": False, "code": -2, "content": "The EID is not registered in egg server"}
+        return False,{"success": False, "code": -2, "content": "The EID is not registered in egg server"}
     return server_manager,result
 
 def insert_eid_api(EID,mongo):
@@ -26,6 +26,8 @@ def insert_eid_api(EID,mongo):
         return {"success": False, "code": -4, "content": "Unable to contact mongo"}
     try:
         server_manager,result=inizialize_EID(EID)
+        if not server_manager:
+            return result
         name=result.backup.user_name
         encypted_EID=utiliy.encrypt_string(EID)
         do_exist=mongo.user_exists(encypted_EID)
@@ -72,6 +74,8 @@ def get_personal_leaderboard(mongo, EID):
             return {"success": False, "code": -4, "content": "Unable to contact mongo"}
 
         server_manager, result = inizialize_EID(EID)
+        if not server_manager:
+            return result
         encypted_EID=utiliy.encrypt_string(EID)
         if not mongo.user_exists(encypted_EID):
             return {"success": False, "code": -4, "content": "You need to first submit your EID in order to view your dashboard"}
