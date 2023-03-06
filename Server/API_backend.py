@@ -36,7 +36,7 @@ def insert_eid_api(EID,mongo):
         if ("last_update_date" in doc.keys()):
             last_update_date=datetime.datetime.strptime(doc["last_update_date"],'%Y-%m-%d %H:%M:%S.%f')
             new_update_date=last_update_date+ timedelta(hours=1)
-            if datetime.datetime.now() < new_update_date:
+            if utiliy.datetime_now().timestamp() < new_update_date.timestamp():
                 return {"success": False, "code": -5, "content": "You can submit your EID on "+str(new_update_date)}
         t=threading.Thread(target=insert_EID.insert,args=(server_manager,mongo,result,encypted_EID,do_exist))
         t.start()
