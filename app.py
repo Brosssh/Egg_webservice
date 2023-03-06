@@ -21,7 +21,7 @@ def main():
 
 @app.route('/sendNewEID', methods=["GET"])
 def newEID():
-    EID=str(request.args.get('EID'))
+    EID=request.args.get('EID')
     response=API_backend.insert_eid_api(EID,mongo)
     return response
 
