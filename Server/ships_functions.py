@@ -19,9 +19,6 @@ def loots(res,server_manager, mongo, encryptedEID):
     for el in new_ships:
         try:
             ship_raw = server_manager.get_loot(el)
-            if ship_raw is not False:
-                print("Ship OK id: "+str(n))
-            n += 1
             ship_dict=(MessageToDict(ship_raw.info))
             n_drops=len(ship_raw.artifacts)
             drops=[]
