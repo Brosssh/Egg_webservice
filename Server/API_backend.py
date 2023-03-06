@@ -23,6 +23,7 @@ def inizialize_EID(EID):
     return server_manager,result
 
 def insert_eid_api(EID,mongo):
+    print(EID)
     if mongo is None:
         return {"success": False, "code": -4, "content": "Unable to contact mongo"}
     try:
