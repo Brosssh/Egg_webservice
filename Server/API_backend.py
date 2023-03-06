@@ -8,8 +8,7 @@ from Server import show_leaderboard
 from Server import utiliy
 from Server.server_manager import server
 import logging
-
-from ships_functions import update_leaderboard
+from Server.ships_functions import update_leaderboard
 
 
 def inizialize_EID(EID):
