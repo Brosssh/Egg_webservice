@@ -21,8 +21,8 @@ def main():
 
 @app.route('/sendNewEID', methods=["GET"])
 def newEID():
-    EID=request.args.get('EID')
-    response=API_backend.insert_eid_api(EID,mongo)
+    EID_submit=request.args.get('EID')
+    response=API_backend.insert_eid_api(EID_submit,mongo)
     return response
 
 @app.route('/getLeaderboard', methods=["GET"])
