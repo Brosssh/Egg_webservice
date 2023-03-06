@@ -1,6 +1,5 @@
 #MONGO IS NOT THE OPTIMAL CHOICE, IK, BUT IT'S FREE SO I'LL USE IT
 import copy
-import datetime
 from bson import ObjectId
 from pymongo import MongoClient
 
@@ -90,7 +89,7 @@ class mongo_manager:
             #get old doc
             doc=self.get_full_from_eid(encryptedEID)
             #contains a dict of only the new ships
-            doc["last_update_date"]=str(datetime.datetime.now())
+            doc["last_update_date"]=str(utiliy.datetime_now())
             to_return=copy.deepcopy(doc)
             to_return["ships"]=to_return["ships"].clear()
             to_return["ships"]=[]

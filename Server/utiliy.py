@@ -1,6 +1,8 @@
 import hashlib
 from itertools import chain, repeat
 import re
+import pytz
+from datetime import datetime
 
 def has_special_characters(s):
     return re.compile('[@_!#$%^&*()<>?/\|}{~:]').search(s)
@@ -8,6 +10,9 @@ def has_special_characters(s):
 def encrypt_string(hash_string):
     sha_signature = hashlib.sha256(hash_string.encode()).hexdigest()
     return sha_signature
+
+def datetime_now():
+    return datetime.now(tz=pytz.UTC)
 
 
 def ask_and_wait_valid_answer(list_possible, question):

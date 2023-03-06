@@ -32,12 +32,13 @@ def insert_eid_api(EID,mongo):
         name=result.backup.user_name
         encypted_EID=utiliy.encrypt_string(EID)
         do_exist=mongo.user_exists(encypted_EID)
-        doc=mongo.get_full_from_eid(encypted_EID)
-        if ("last_update_date" in doc.keys()):
-            last_update_date=datetime.datetime.strptime(doc["last_update_date"],'%Y-%m-%d %H:%M:%S.%f')
-            new_update_date=last_update_date+ timedelta(hours=1)
-            if datetime.datetime.now() < new_update_date:
-                return {"success": False, "code": -5, "content": "You can submit your EID on "+str(new_update_date)}
+        if do_exist:
+            doc=mongo.get_full_from_eid(encypted_EID)
+            if ("last_update_date" in doc.keys()):
+                last_update_date=datetime.datetime.strptime(doc["last_update_date"],'%Y-%m-%d %H:%M:%S.%f%z')
+                new_update_date=last_update_date+ timedelta(hours=1)
+                if utiliy.datetime_now().timestamp() < new_update_date.timestamp():
+                    return {"success": False, "code": -5, "content": "You can submit your EID on "+str(new_update_date)}
         t=threading.Thread(target=insert_EID.insert,args=(server_manager,mongo,result,encypted_EID,do_exist))
         t.start()
         return {"success": True, "code": 1, "content": "Thanks "+name+", your ships are being updated... Check the leaderboard in a few minutes"} if do_exist is not None else {"success": True, "code": 2, "content": "Thanks for your submission "+name+". Since it's your first submission it will take some time, check back the leaderboard in some minutes"}
