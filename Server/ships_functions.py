@@ -19,14 +19,15 @@ def loots(res,server_manager, mongo, encryptedEID):
     for el in new_ships:
         try:
             ship_raw = server_manager.get_loot(el)
-            ship_dict=(MessageToDict(ship_raw.info))
-            n_drops=len(ship_raw.artifacts)
-            drops=[]
-            for i in range(n_drops):
-                dict_temp=MessageToDict(ship_raw.artifacts[i])
-                drops.append(dict_temp)
-            ship_dict["drop_List"]=drops
-            file_loot.append(ship_dict)
+            if ship_raw is not False:
+                ship_dict=(MessageToDict(ship_raw.info))
+                n_drops=len(ship_raw.artifacts)
+                drops=[]
+                for i in range(n_drops):
+                    dict_temp=MessageToDict(ship_raw.artifacts[i])
+                    drops.append(dict_temp)
+                ship_dict["drop_List"]=drops
+                file_loot.append(ship_dict)
         except Exception as e:
             print(e)
 
