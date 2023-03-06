@@ -13,7 +13,10 @@ from Server.ships_functions import update_leaderboard
 
 def inizialize_EID(EID):
     server_manager = server()
-    result = server_manager.get_bot_first_contact(EID)
+    try:
+        result = server_manager.get_bot_first_contact(EID)
+    except:
+        return {"success": False, "code": -2, "content": "The EID is not registered in egg server"}
     if not result:
         return {"success": False, "code": -3, "content": "Bad response by auxbrain"}
     checksum = result.backup.checksum
