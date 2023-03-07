@@ -2,6 +2,8 @@ import threading
 
 from flask import Flask, request
 import os
+
+from Server.API_backend import Compute
 from Server.mongoDB_manager import mongo_manager
 from Server import API_backend
 
@@ -30,8 +32,9 @@ def newEID():
     EID_submit=request.form['EID']
     response=API_backend.get_message(EID_submit,mongo)
     if response["success"]:
-        t = threading.Thread(target=start_new_EID_thread,args=(EID_submit,mongo))
-        t.start()
+        print("Success")
+        thread_a = Compute(EID_submit,mongo)
+        thread_a.start()
     return response
 
 @app.route('/getLeaderboard', methods=["GET"])
