@@ -95,13 +95,16 @@ def get_personal_leaderboard(mongo, EID):
         return {"success": False, "code": -1, "content": str(e)}
 
 def debug_only_reset_leaderboards(mongo):
-    only_value={"1":{'name': [], 'stars': [], 'capacity': [], 'identifier': [], 'count': [{'1': 0, '2': 0, '3': 0, '4': 0, 'total': 0}]}}
-    for el in utiliy.get_leaderboards_names_static():
-        mongo.load_updated_document_by_name(only_value,el)
-    for encrypted_EID in tqdm([el["EID"] for el in list(mongo.get_all_encrypted_IDs())]):
-        full_ships=mongo.get_full_from_eid(encrypted_EID)
-        leaderboard_dict = mongo.build_full_leaderboard()
-        print('Started leaderboard update EID : ' + encrypted_EID)
-        leaderboard_updated = update_leaderboard(leaderboard_dict, full_ships)
-        for el in leaderboard_updated:
-            mongo.load_updated_document_by_name(leaderboard_updated[el], el)
+    try:
+        only_value={"1":{'name': [], 'stars': [], 'capacity': [], 'identifier': [], 'count': [{'1': 0, '2': 0, '3': 0, '4': 0, 'total': 0}]}}
+        for el in utiliy.get_leaderboards_names_static():
+            mongo.load_updated_document_by_name(only_value,el)
+        for encrypted_EID in tqdm([el["EID"] for el in list(mongo.get_all_encrypted_IDs())]):
+            full_ships=mongo.get_full_from_eid(encrypted_EID)
+            leaderboard_dict = mongo.build_full_leaderboard()
+            print('Started leaderboard update EID : ' + encrypted_EID)
+            leaderboard_updated = update_leaderboard(leaderboard_dict, full_ships)
+            for el in leaderboard_updated:
+                mongo.load_updated_document_by_name(leaderboard_updated[el], el)
+    except Exception as e:
+        print(e)

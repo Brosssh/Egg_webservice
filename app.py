@@ -19,9 +19,9 @@ def main():
     return "test"
 
 
-@app.route('/sendNewEID', methods=["GET"])
+@app.route('/sendNewEID', methods=["POST"])
 def newEID():
-    EID_submit=request.args.get('EID')
+    EID_submit=request.form['EID']
     response=API_backend.insert_eid_api(EID_submit,mongo)
     return response
 
