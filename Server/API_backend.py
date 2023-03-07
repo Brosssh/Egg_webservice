@@ -22,6 +22,28 @@ def inizialize_EID(EID):
         return False,{"success": False, "code": -2, "content": "The EID is not registered in egg server"}
     return server_manager,result
 
+def get_message(EID,mongo):
+    print(EID)
+    if mongo is None:
+        return {"success": False, "code": -4, "content": "Unable to contact mongo"}
+    try:
+        server_manager,result=inizialize_EID(EID)
+        if not server_manager:
+            return result
+        name=result.backup.user_name
+        encypted_EID=utiliy.encrypt_string(EID)
+        do_exist=mongo.user_exists(encypted_EID)
+        if do_exist:
+            doc=mongo.get_full_from_eid(encypted_EID)
+            if ("last_update_date" in doc.keys()):
+                last_update_date=datetime.datetime.strptime(doc["last_update_date"],'%Y-%m-%d %H:%M:%S.%f%z')
+                new_update_date=last_update_date+ timedelta(hours=1)
+                if utiliy.datetime_now().timestamp() < new_update_date.timestamp():
+                    return {"success": False, "code": -5, "content": "You can submit your EID on "+str(new_update_date)}
+        return {"success": True, "code": 1, "content": "Thanks "+name+", your ships are being updated... Check the leaderboard in a few minutes"} if do_exist is not None else {"success": True, "code": 2, "content": "Thanks for your submission "+name+". Since it's your first submission it will take some time, check back the leaderboard in some minutes"}
+    except Exception as e:
+        return {"success": False, "code": -1, "content": str(e)}
+
 def insert_eid_api(EID,mongo):
     print(EID)
     if mongo is None:

@@ -1,3 +1,5 @@
+import threading
+
 from flask import Flask, request
 import os
 from Server.mongoDB_manager import mongo_manager
@@ -14,6 +16,10 @@ mongo = mongo_manager(conn)
 
 app = Flask(__name__)
 
+def start_new_EID_thread(EID,mongo):
+    print("Into method")
+    API_backend.insert_eid_api(EID,mongo)
+
 @app.route('/', methods=["GET"])
 def main():
     return "test"
@@ -22,7 +28,10 @@ def main():
 @app.route('/sendNewEID', methods=["POST"])
 def newEID():
     EID_submit=request.form['EID']
-    response=API_backend.insert_eid_api(EID_submit,mongo)
+    response=API_backend.get_message(EID_submit,mongo)
+    if response["success"]:
+        t = threading.Thread(target=start_new_EID_thread,args=(EID_submit,mongo))
+        t.start()
     return response
 
 @app.route('/getLeaderboard', methods=["GET"])
