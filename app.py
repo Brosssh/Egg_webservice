@@ -29,7 +29,7 @@ def newEID():
     EID_submit=request.form['EID']
     response=API_backend.get_message(EID_submit,mongo)
     if response["success"]:
-        print("Starting compute "+EID_submit)
+        app.logger.info("Starting compute "+EID_submit)
         thread_a = Compute(EID_submit,mongo)
         thread_a.start()
     return response

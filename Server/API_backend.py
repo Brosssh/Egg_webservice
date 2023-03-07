@@ -22,7 +22,7 @@ class Compute(Thread):
     def run(self):
         print("Start thread " +self.EID)
         time.sleep(2)
-        #insert_eid_api(self.EID,self.mongo)
+        insert_eid_api(self.EID,self.mongo)
         print("Done thread "+self.EID)
 
 def inizialize_EID(EID):
