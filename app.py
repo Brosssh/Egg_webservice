@@ -18,9 +18,6 @@ mongo = mongo_manager(conn)
 
 app = Flask(__name__)
 
-def start_new_EID_thread(EID,mongo):
-    print("Into method")
-    API_backend.insert_eid_api(EID,mongo)
 
 @app.route('/', methods=["GET"])
 def main():
@@ -32,7 +29,7 @@ def newEID():
     EID_submit=request.form['EID']
     response=API_backend.get_message(EID_submit,mongo)
     if response["success"]:
-        print("Success")
+        print("Starting compute "+EID_submit)
         thread_a = Compute(EID_submit,mongo)
         thread_a.start()
     return response

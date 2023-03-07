@@ -1,4 +1,5 @@
 import datetime
+import threading
 import time
 from threading import Thread
 from tqdm import tqdm
@@ -19,10 +20,10 @@ class Compute(Thread):
         self.mongo=mongo
 
     def run(self):
-        print("start")
+        print("Start thread " +self.EID)
         time.sleep(2)
         insert_eid_api(self.EID,self.mongo)
-        print("done")
+        print("Done thread "+self.EID)
 
 def inizialize_EID(EID):
     server_manager = server()
@@ -74,8 +75,7 @@ def insert_eid_api(EID,mongo):
                 new_update_date=last_update_date+ timedelta(hours=1)
                 if utiliy.datetime_now().timestamp() < new_update_date.timestamp():
                     return {"success": False, "code": -5, "content": "You can submit your EID on "+str(new_update_date)}
-        t=threading.Thread(target=insert_EID.insert,args=(server_manager,mongo,result,encypted_EID,do_exist))
-        t.start()
+        insert_EID.insert(server_manager,mongo,result,encypted_EID,do_exist)
     except Exception as e:
         return {"success": False, "code": -1, "content": str(e)}
 
