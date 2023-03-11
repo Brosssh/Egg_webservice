@@ -26,13 +26,7 @@ def main():
 
 @app.route('/sendNewEID', methods=["POST"])
 def newEID():
-    EID_submit=request.form['EID']
-    response=API_backend.get_message(EID_submit,mongo)
-    if response["success"]:
-        app.logger.info("Starting compute "+EID_submit)
-        thread_a = Compute(EID_submit,mongo)
-        thread_a.start()
-    return response
+    return "Submit on replit"
 
 @app.route('/getLeaderboard', methods=["GET"])
 def getlead():

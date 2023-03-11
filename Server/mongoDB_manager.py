@@ -17,10 +17,26 @@ class mongo_manager:
         except:
             print("Something went wrong with the database connection")
 
+    def rename_after_full_refresh(self):
+        self.client["db_leaderboard"]["leaderboard"].rename('leaderboard_old')
+        print("Renamed leaderboard to leaderboard_old")
+        self.client["db_leaderboard"]["leaderboard_new"].rename('leaderboard')
+        print("Renamed leaderboard_new to leaderboard")
+
+
+
     def __get_leaderboard_coll__(self):
         try:
             mydb = self.client["db_leaderboard"]
             mycol = mydb["leaderboard"]
+            return mycol
+        except:
+            print("Something went wrong with the database connection")
+
+    def __get_leaderboard_coll_new__(self):
+        try:
+            mydb = self.client["db_leaderboard"]
+            mycol = mydb["leaderboard_new"]
             return mycol
         except:
             print("Something went wrong with the database connection")
@@ -124,6 +140,13 @@ class mongo_manager:
         except Exception as e:
             print(e)
 
+    def load_updated_document_by_name_new(self, leaderboard_updated,name):
+        try:
+            self.__get_leaderboard_coll_new__().delete_one({"name":name})
+            self.__get_leaderboard_coll_new__().insert_one({"name":name,"content":leaderboard_updated})
+        except Exception as e:
+            print(e)
+
     def get_leaderboard_test(self):
         try:
             return self.__get_leaderboard_coll__().find_one({"type": "artifacts"})
@@ -133,6 +156,16 @@ class mongo_manager:
     def build_full_leaderboard(self):
         try:
             all_docs=[el for el in self.__get_leaderboard_coll__().find({"name":{"$exists":1}})]
+            big_dict={}
+            for el in all_docs:
+                big_dict[el["name"]]=el["content"]
+            return big_dict
+        except Exception as e:
+            print(e)
+
+    def build_full_leaderboard_new(self):
+        try:
+            all_docs=[el for el in self.__get_leaderboard_coll_new__().find({"name":{"$exists":1}})]
             big_dict={}
             for el in all_docs:
                 big_dict[el["name"]]=el["content"]

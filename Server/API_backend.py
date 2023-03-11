@@ -13,17 +13,6 @@ import logging
 from Server.ships_functions import update_leaderboard
 
 
-class Compute(Thread):
-    def __init__(self, EID, mongo):
-        Thread.__init__(self)
-        self.EID = EID
-        self.mongo=mongo
-
-    def run(self):
-        print("Start thread " +self.EID)
-        time.sleep(2)
-        insert_eid_api(self.EID,self.mongo)
-        print("Done thread "+self.EID)
 
 def inizialize_EID(EID):
     server_manager = server()
@@ -131,13 +120,14 @@ def debug_only_reset_leaderboards(mongo):
     try:
         only_value={"1":{'name': [], 'stars': [], 'capacity': [], 'identifier': [], 'count': [{'1': 0, '2': 0, '3': 0, '4': 0, 'total': 0}]}}
         for el in utiliy.get_leaderboards_names_static():
-            mongo.load_updated_document_by_name(only_value,el)
+            mongo.load_updated_document_by_name_new(only_value,el)
+        leaderboard_updated = mongo.build_full_leaderboard_new()
         for encrypted_EID in tqdm([el["EID"] for el in list(mongo.get_all_encrypted_IDs())]):
             full_ships=mongo.get_full_from_eid(encrypted_EID)
-            leaderboard_dict = mongo.build_full_leaderboard()
             print('Started leaderboard update EID : ' + encrypted_EID)
-            leaderboard_updated = update_leaderboard(leaderboard_dict, full_ships)
-            for el in leaderboard_updated:
-                mongo.load_updated_document_by_name(leaderboard_updated[el], el)
+            leaderboard_updated = update_leaderboard(leaderboard_updated, full_ships)
+        for el2 in leaderboard_updated:
+                mongo.load_updated_document_by_name_new(leaderboard_updated[el2], el2)
+        mongo.rename_after_full_refresh()
     except Exception as e:
         print(e)
