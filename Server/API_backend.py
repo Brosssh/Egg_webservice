@@ -5,7 +5,7 @@ from threading import Thread
 from tqdm import tqdm
 from datetime import timedelta
 
-import CSV_loot
+from Server import CSV_loot
 from Server import show_personal_leaderboard
 from Server import insert_EID
 from Server import show_leaderboard
