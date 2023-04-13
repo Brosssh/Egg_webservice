@@ -8,14 +8,13 @@ jobs:
     steps:
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner.
-      - name: Set env as secret
-        env:
-          USER: ${{ secrets.MONGO_USER }}
-          PSSW: ${{ secrets.MONGO_PSSW }}
       - name: setup python
         uses: actions/setup-python@v2
         with:
           python-version: 3.8 #install the python needed
+        env:
+          USER: ${{ secrets.MONGO_USER }}
+          PSSW: ${{ secrets.MONGO_PSSW }}
       - name: Install dependencies
         run: |
             python -m pip install --upgrade pip
