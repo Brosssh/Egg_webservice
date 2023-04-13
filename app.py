@@ -1,5 +1,8 @@
+import threading
+
 from flask import Flask, request
 import os
+
 from Server.mongoDB_manager import mongo_manager
 from Server import API_backend
 
@@ -14,16 +17,15 @@ mongo = mongo_manager(conn)
 
 app = Flask(__name__)
 
+
 @app.route('/', methods=["GET"])
 def main():
     return "test"
 
 
-@app.route('/sendNewEID', methods=["GET"])
+@app.route('/sendNewEID', methods=["POST"])
 def newEID():
-    EID_submit=request.args.get('EID')
-    response=API_backend.insert_eid_api(EID_submit,mongo)
-    return response
+    return "Submit on replit"
 
 @app.route('/getLeaderboard', methods=["GET"])
 def getlead():
