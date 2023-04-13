@@ -119,7 +119,7 @@ def get_personal_leaderboard(mongo, EID):
         return {"success": False, "code": -1, "content": str(e)}
 
 def debug_only_reset_leaderboards(mongo):
-    print("Starting...")
+    print("Starting....")
     try:
         only_value={"1":{'name': [], 'stars': [], 'capacity': [], 'identifier': [], 'count': [{'1': 0, '2': 0, '3': 0, '4': 0, 'total': 0}]}}
         for el in utiliy.get_leaderboards_names_static():
