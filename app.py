@@ -3,7 +3,6 @@ import threading
 from flask import Flask, request
 import os
 
-from Server.API_backend import Compute
 from Server.mongoDB_manager import mongo_manager
 from Server import API_backend
 
