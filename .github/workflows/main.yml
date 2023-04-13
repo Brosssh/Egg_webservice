@@ -9,9 +9,9 @@ jobs:
       - name: checkout repo content
         uses: actions/checkout@v2 # checkout the repository content to github runner.
       - name: Set env as secret
-          env:
-            USER: ${{ secrets.MONGO_USER }}
-            PSSW: ${{ secrets.MONGO_PSSW }}
+        env:
+          USER: ${{ secrets.MONGO_USER }}
+          PSSW: ${{ secrets.MONGO_PSSW }}
       - name: setup python
         uses: actions/setup-python@v2
         with:
