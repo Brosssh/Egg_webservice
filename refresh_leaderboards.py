@@ -3,8 +3,8 @@ from Server.mongoDB_manager import mongo_manager
 from Server import API_backend
 import os
 
-user=os.getenv('user')
-pssw=os.getenv('pssw')
+user=os.getenv('USER')
+pssw=os.getenv('PSSW')
 
 
 conn = "mongodb+srv://" + user + ":" + pssw + "@eggcluster.sbrsi.mongodb.net/?retryWrites=true&w=majority"
