@@ -1,8 +1,6 @@
 name: py
 
-on:
-  schedule:
-    - cron: "00 8 * * *"    #runs at 8:00 UTC everyday, 10 AM my timezone
+on: [push]
 
 jobs:
   build:
