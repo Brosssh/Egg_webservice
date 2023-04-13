@@ -12,6 +12,8 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: 3.8 #install the python needed
+      - name: Test env vars for python
+        run: python -c 'import os;print(os.environ)'
         env:
           USER: ${{ secrets.MONGO_USER }}
           PSSW: ${{ secrets.MONGO_PSSW }}
