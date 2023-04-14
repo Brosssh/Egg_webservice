@@ -1,6 +1,0 @@
-﻿Flask==2.2.3
-protobuf==4.22.0
-pymongo==4.3.3
-requests==2.28.2
-tqdm==4.65.0
-pytz==2022.7.1
