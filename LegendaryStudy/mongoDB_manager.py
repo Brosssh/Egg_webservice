@@ -1,15 +1,20 @@
 import datetime
 from pymongo import MongoClient
-
+import os
 
 
 class mongo_manager:
 
     client=None
 
-    def __init__(self,conn_string):
+    def __init__(self,user=None,pssw=None):
+        if user is None and pssw is None:
+            user = os.getenv('MONGO_USER')
+            pssw = os.getenv('MONGO_PSSW')
+
+        conn = "mongodb+srv://"+user+":"+pssw+"@legendarystudy.c4uj7ri.mongodb.net/?retryWrites=true&w=majority"
         if self.client is None:
-            self.client = MongoClient(conn_string)
+            self.client = MongoClient(conn)
 
 
     def __get_coll__(self):
@@ -22,4 +27,7 @@ class mongo_manager:
     def load_backup(self, backup):
         self.__get_coll__().insert_one({"date_insert":str(datetime.datetime.now()),"backup":backup})
         return {"success": True}
+
+    def get_users_files(self):
+        return self.__get_coll__().find()
 

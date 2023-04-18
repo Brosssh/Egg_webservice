@@ -11,7 +11,26 @@ def submitEID(mongo, EID):
             backup = response_auxbrain["response"].backup
             backup.ei_user_id = encrypt_string(EID)
             backup_dict=protoToDict(backup)
-            #backup_dict.pop('key', None)
+
+            #remove stuff too big to save space
+            shipsCountArchiveAR={}
+            for el in backup_dict["artifactsDb"]['missionArchive']:
+                if el["ship"] not in shipsCountArchiveAR:
+                    shipsCountArchiveAR[el["ship"]+":"+el["durationType"]]=1
+                else:
+                    shipsCountArchiveAR[el["ship"]+":"+el["durationType"]]+=1
+            backup_dict["artifactsDb"]['shipsCountArchiveAR']=shipsCountArchiveAR
+
+            del backup_dict["artifactsDb"]['missionArchive']
+            del backup_dict["contracts"]
+            del backup_dict["tutorial"]
+            del backup_dict["game"]["news"]
+            del backup_dict["game"]["achievements"]
+            del backup_dict["mission"]
+            del backup_dict["farms"]
+
+
+
             result=mongo.load_backup(backup_dict)
             if result["success"]:
                 return {"success":True,"message":"OK"}
