@@ -1,4 +1,7 @@
 import copy
+import datetime
+import json
+import os
 
 from tqdm import tqdm
 
@@ -27,7 +30,7 @@ def get_zlc_record(file_list):
             if "HENERPRISE:EPIC" in el["backup"]["artifactsDb"]["shipsCountArchiveAR"]:
                 count_exthens=el["backup"]["artifactsDb"]["shipsCountArchiveAR"]["HENERPRISE:EPIC"]
                 if count_exthens > max_exthens:
-                    result={max_exthens:user_name}
+                    result={max_exthens:{"user_name":user_name,"report_date":str(datetime.date.today())}}
     return result
 
 def legendary_seen(file_list):
@@ -52,6 +55,5 @@ final_dict_report["leg_seen"]=legendary_seen(copy.deepcopy(file_list))
 final_dict_report["legendary_players"]=get_dict_legendary_players(copy.deepcopy(file_list))
 final_dict_report["zlc_record"]=get_zlc_record(copy.deepcopy(file_list))
 
-
-
-print(final_dict_report)
+mongo_reports = mongo_manager(host="reports.dj5tz2b.mongodb.net")
+mongo_reports.load_daily_report_legendary(final_dict_report)
