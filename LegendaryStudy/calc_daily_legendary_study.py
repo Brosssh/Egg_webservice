@@ -62,6 +62,7 @@ def legendary_seen(file_list):
     print("Finish legendary_seen")
     return leg_seen
 
+
 final_dict_report={}
 mongo = mongo_manager()
 mongo_reports = mongo_manager(host="reports.dj5tz2b.mongodb.net")
@@ -72,6 +73,8 @@ file_list = mongo.get_users_files()
 final_dict_report["leg_seen"]=legendary_seen(copy.deepcopy(file_list))
 final_dict_report["legendary_players"]=get_dict_legendary_players(copy.deepcopy(file_list))
 final_dict_report["zlc_record"]=get_zlc_record(copy.deepcopy(file_list),old_file["report"]["zlc_record"])
+final_dict_report["number_total_users"]=len(list(file_list))
+
 
 print("Loading new report, "+str(datetime.date.today()))
 mongo_reports.load_daily_report_legendary(final_dict_report)
