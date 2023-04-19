@@ -21,8 +21,6 @@ mongo = mongo_manager(conn)
 #</editor-fold>
 
 #<editor-fold desc="Mongo connection for legendary study etc">
-LS_conn = "mongodb+srv://" + user + ":" + pssw + "@legendarystudy.c4uj7ri.mongodb.net/?retryWrites=true&w=majority"
-
 LS_mongo = LS_mongo_manager()
 #</editor-fold>
 
