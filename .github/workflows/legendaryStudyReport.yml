@@ -1,9 +1,6 @@
-name: RefreshLeaderboard
+name: legendaryStudyReport
 
-
-on:
-  schedule:
-    - cron: "00 6 * * *"    #runs at 6:00 UTC everyday, 8 AM my timezone
+on: [push]
 
 jobs:
   build:
@@ -21,4 +18,4 @@ jobs:
              pip install -r requirements.txt
       - name: execute py script # run file
         run: |
-          MONGO_USER=${{ secrets.MONGO_USER }} MONGO_PSSW=${{ secrets.MONGO_PSSW }} python refresh_leaderboards.py
+          MONGO_USER=${{ secrets.MONGO_USER }} MONGO_PSSW=${{ secrets.MONGO_PSSW }} python ./LegendaryStudy/calc_daily_legendary_study.py
