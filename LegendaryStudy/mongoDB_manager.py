@@ -13,7 +13,7 @@ class mongo_manager:
         host_final=host if host is not None else "legendarystudy.c4uj7ri.mongodb.net"
         conn = "mongodb+srv://"+user_final+":"+pssw_final+"@"+host_final+"/?retryWrites=true&w=majority"
         if self.client is None:
-            self.client = MongoClient(conn)
+            self.client = MongoClient(conn, connect=False)
 
 
     def __get_coll__(self):
