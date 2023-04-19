@@ -1,11 +1,9 @@
 import copy
 import datetime
-import json
-import os
 
 from tqdm import tqdm
 
-from LegendaryStudy.mongoDB_manager import mongo_manager
+from mongoDB_manager import mongo_manager
 
 def get_dict_legendary_players(file_list):
     final_dict_legendary = {}

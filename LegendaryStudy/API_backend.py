@@ -1,5 +1,5 @@
-from LegendaryStudy import auxbrain_manager
-from LegendaryStudy.utility import encrypt_string, protoToJson, protoToDict
+import auxbrain_manager
+from utility import encrypt_string, protoToDict
 
 
 def submitEID(mongo, EID):
