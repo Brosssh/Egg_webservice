@@ -1,4 +1,5 @@
 import datetime
+from datetime import timedelta
 from pymongo import MongoClient
 import os
 
@@ -45,3 +46,7 @@ class mongo_manager:
             self.__get_reports_coll__().delete_one({"date_insert":str(datetime.date.today())})
         self.__get_reports_coll__().insert_one({"date_insert":str(datetime.date.today()),"report":file})
         return {"success": True}
+
+
+    def get_last_report_legendary(self):
+        return self.__get_reports_coll__().find().sort("date_insert",-1)[0]
