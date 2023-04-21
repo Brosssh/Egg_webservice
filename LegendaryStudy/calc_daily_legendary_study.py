@@ -1,6 +1,5 @@
 import copy
 import datetime
-
 from tqdm import tqdm
 
 from mongoDB_manager import mongo_manager
