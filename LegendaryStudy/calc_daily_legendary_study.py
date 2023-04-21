@@ -38,7 +38,7 @@ def get_zlc_record(file_list, old_zlc_record):
                 if "HENERPRISE:EPIC" in el["backup"]["artifactsDb"]["shipsCountArchiveAR"]:
                     count_exthens=el["backup"]["artifactsDb"]["shipsCountArchiveAR"]["HENERPRISE:EPIC"]
                     if count_exthens > max_exthens:
-                        result={max_exthens:{"user_name":user_name,"report_date":str(datetime.date.today())}}
+                        result={str(max_exthens):{"user_name":user_name,"report_date":str(datetime.date.today())}}
         except Exception as e:
             print("Exception while calculating get_zlc_record for "+el["backup"]["eiUserId"]+": "+str(e))
     print("Finish get_zlc_record")
@@ -75,7 +75,7 @@ final_dict_report["legendary_players"]=get_dict_legendary_players(copy.deepcopy(
 final_dict_report["zlc_record"]=get_zlc_record(copy.deepcopy(file_list),old_file["report"]["zlc_record"])
 final_dict_report["number_total_users"]=len(list(file_list))
 
-
+print(str(final_dict_report["zlc_record"]))
 print("Loading new report, "+str(datetime.date.today()))
 mongo_reports.load_daily_report_legendary(final_dict_report)
 print("New report loaded")

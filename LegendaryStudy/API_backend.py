@@ -15,7 +15,7 @@ def submitEID(mongo, EID):
             #remove stuff too big to save space
             shipsCountArchiveAR={}
             for el in backup_dict["artifactsDb"]['missionArchive']:
-                if el["ship"] not in shipsCountArchiveAR:
+                if el["ship"]+":"+el["durationType"] not in shipsCountArchiveAR:
                     shipsCountArchiveAR[el["ship"]+":"+el["durationType"]]=1
                 else:
                     shipsCountArchiveAR[el["ship"]+":"+el["durationType"]]+=1
