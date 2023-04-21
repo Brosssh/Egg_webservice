@@ -35,11 +35,10 @@ def get_zlc_record(file_list, old_zlc_record):
             user_name=el["backup"]["userName"] if el["backup"]["userName"] is not None else "No alias"
             count = int(sum(x["quantity"] for x in inventory_items if x["artifact"]["spec"]["rarity"] == "LEGENDARY"))
             if count==0:
-                print(str("HENERPRISE:EPIC" in el["backup"]["artifactsDb"]["shipsCountArchiveAR"]))
                 if "HENERPRISE:EPIC" in el["backup"]["artifactsDb"]["shipsCountArchiveAR"]:
                     count_exthens=el["backup"]["artifactsDb"]["shipsCountArchiveAR"]["HENERPRISE:EPIC"]
-                    print(str(count_exthens))
                     if count_exthens > max_exthens:
+                        max_exthens=count_exthens
                         result={str(max_exthens):{"user_name":user_name,"report_date":str(datetime.date.today())}}
         except Exception as e:
             print("Exception while calculating get_zlc_record for "+el["backup"]["eiUserId"]+": "+str(e))
