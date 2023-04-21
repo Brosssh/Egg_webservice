@@ -75,7 +75,7 @@ final_dict_report["legendary_players"]=get_dict_legendary_players(copy.deepcopy(
 final_dict_report["zlc_record"]=get_zlc_record(copy.deepcopy(file_list),old_file["report"]["zlc_record"])
 final_dict_report["number_total_users"]=len(list(file_list))
 
-
+print(str(final_dict_report["zlc_record"]))
 print("Loading new report, "+str(datetime.date.today()))
 mongo_reports.load_daily_report_legendary(final_dict_report)
 print("New report loaded")
