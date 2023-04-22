@@ -23,8 +23,8 @@ def get_dict_legendary_players(file_list):
 
 def get_zlc_record(file_list, old_zlc_record):
     print("Starting get_zlc_record")
-    if len(old_zlc_record)==1:
-        max_exthens = int(list(old_zlc_record.keys())[0])
+    if old_zlc_record is not None:
+        max_exthens = int(old_zlc_record["count_exthens"])
     else:
         max_exthens = 0
     result=old_zlc_record
@@ -38,7 +38,7 @@ def get_zlc_record(file_list, old_zlc_record):
                     count_exthens=el["backup"]["artifactsDb"]["shipsCountArchiveAR"]["HENERPRISE:EPIC"]
                     if count_exthens > max_exthens:
                         max_exthens=count_exthens
-                        result={"user_name":user_name,"report_date":str(datetime.date.today()),count_exthens:str(max_exthens)}
+                        result={"user_name":user_name,"report_date":str(datetime.date.today()),"count_exthens":str(max_exthens)}
         except Exception as e:
             print("Exception while calculating get_zlc_record for "+el["backup"]["eiUserId"]+": "+str(e))
     print("Finish get_zlc_record")
