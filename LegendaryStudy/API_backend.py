@@ -39,3 +39,8 @@ def submitEID(mongo, EID):
         return {"success": False, "message": "Backup empty"}
     except Exception as e:
         return {"success": False, "message": str(e)}
+
+
+
+def getReport(mongo, date):
+    return mongo.get_report_by_date(date)
