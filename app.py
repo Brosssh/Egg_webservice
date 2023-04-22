@@ -22,6 +22,7 @@ mongo = mongo_manager(conn)
 
 #<editor-fold desc="Mongo connection for legendary study etc">
 LS_mongo = LS_mongo_manager()
+mongo_reports=LS_mongo_manager(host="reports.dj5tz2b.mongodb.net")
 #</editor-fold>
 
 app = Flask(__name__)
@@ -60,5 +61,5 @@ def submitEID():
 @app.route('/getReportByDate', methods=["GET"])
 def getReportByDate():
     date = str(request.args.get('date'))
-    response=LS_backend.getReport(LS_mongo,date)
+    response=str(LS_backend.getReportByDate(mongo_reports,date))
     return response
