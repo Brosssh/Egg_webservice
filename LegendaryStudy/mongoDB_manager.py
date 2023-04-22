@@ -50,3 +50,17 @@ class mongo_manager:
 
     def get_last_report_legendary(self):
         return self.__get_reports_coll__().find().sort("date_insert",-1)[0]
+
+    def get_anonymus_legendary_report_by_date(self,date):
+        file=self.__get_reports_coll__().find_one({"date_insert":date})
+        if file is None:
+            return None
+        else:
+            del file["_id"]
+            leg_seen_list=file["report"]["leg_seen"]
+            for el in leg_seen_list:
+                file["report"]["leg_seen"][el]=len(file["report"]["leg_seen"][el])
+            legendary_players_list = file["report"]["legendary_players"]
+            for el in legendary_players_list:
+                file["report"]["legendary_players"][el]=len(file["report"]["legendary_players"][el])
+            return file

@@ -1,6 +1,5 @@
 import copy
 import datetime
-
 from tqdm import tqdm
 
 from mongoDB_manager import mongo_manager
@@ -68,7 +67,6 @@ final_dict_report={}
 mongo = mongo_manager()
 mongo_reports = mongo_manager(host="reports.dj5tz2b.mongodb.net")
 old_file=mongo_reports.get_last_report_legendary()
-
 
 file_list = mongo.get_users_files()
 final_dict_report["leg_seen"]=legendary_seen(copy.deepcopy(file_list))
