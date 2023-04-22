@@ -15,7 +15,7 @@ def submitEID(mongo, EID):
             #remove stuff too big to save space
             shipsCountArchiveAR={}
             for el in backup_dict["artifactsDb"]['missionArchive']:
-                if el["ship"] not in shipsCountArchiveAR:
+                if el["ship"]+":"+el["durationType"] not in shipsCountArchiveAR:
                     shipsCountArchiveAR[el["ship"]+":"+el["durationType"]]=1
                 else:
                     shipsCountArchiveAR[el["ship"]+":"+el["durationType"]]+=1
@@ -39,7 +39,3 @@ def submitEID(mongo, EID):
         return {"success": False, "message": "Backup empty"}
     except Exception as e:
         return {"success": False, "message": str(e)}
-
-
-def getReport(mongo, date):
-    return mongo.get_report_by_date(date)

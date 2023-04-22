@@ -1,6 +1,6 @@
 name: legendaryStudyReport
 
-on: [push]
+on: push
 
 jobs:
   build:
