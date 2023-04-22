@@ -58,7 +58,7 @@ def submitEID():
     return response
 
 @app.route('/getReportByDate', methods=["GET"])
-def submitEID():
+def getReportByDate():
     date = str(request.args.get('date'))
     response=LS_backend.getReport(LS_mongo,date)
     return response

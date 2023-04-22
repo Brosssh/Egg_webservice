@@ -68,7 +68,6 @@ mongo = mongo_manager()
 mongo_reports = mongo_manager(host="reports.dj5tz2b.mongodb.net")
 old_file=mongo_reports.get_last_report_legendary()
 
-
 file_list = mongo.get_users_files()
 final_dict_report["leg_seen"]=legendary_seen(copy.deepcopy(file_list))
 final_dict_report["legendary_players"]=get_dict_legendary_players(copy.deepcopy(file_list))

@@ -41,6 +41,12 @@ def submitEID(mongo, EID):
         return {"success": False, "message": str(e)}
 
 
+def getLastReport(mongo):
+    return mongo.get_last_report_legendary()
 
-def getReport(mongo, date):
-    return mongo.get_report_by_date(date)
+def getReportByDate(mongo, date):
+    try:
+        report=mongo.get_anonymus_legendary_report_by_date(date)
+        return {"success": True, "message": report} if report is not None else {"success": False, "message": "There is no report for the specified date"}
+    except Exception as e:
+        return {"success": False, "message": e}
