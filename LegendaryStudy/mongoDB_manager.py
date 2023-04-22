@@ -50,3 +50,6 @@ class mongo_manager:
 
     def get_last_report_legendary(self):
         return self.__get_reports_coll__().find().sort("date_insert",-1)[0]
+
+    def get_report_by_date(self,date):
+        return self.__get_reports_coll__().find({"date_insert":date})

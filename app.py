@@ -56,3 +56,9 @@ def submitEID():
     EID=request.form.get('EID')
     response=LS_backend.submitEID(LS_mongo,EID)
     return response
+
+@app.route('/getReportByDate', methods=["GET"])
+def submitEID():
+    date = str(request.args.get('date'))
+    response=LS_backend.getReport(LS_mongo,date)
+    return response
