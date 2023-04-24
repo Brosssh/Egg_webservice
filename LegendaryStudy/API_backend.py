@@ -50,3 +50,9 @@ def getReportByDate(mongo, date):
         return {"success": True, "message": report} if report is not None else {"success": False, "message": "There is no report for the specified date"}
     except Exception as e:
         return {"success": False, "message": e}
+
+def getTimestampsReport(mongo):
+    try:
+        return {"success": True, "message": mongo.get_timestamps_legendary_report()}
+    except Exception as e:
+        return {"success": False, "message": e}

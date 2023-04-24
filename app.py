@@ -63,3 +63,8 @@ def getReportByDate():
     date = str(request.args.get('date'))
     response=str(LS_backend.getReportByDate(mongo_reports,date))
     return response
+
+@app.route('/getTimestampsReport', methods=["GET"])
+def getTimestampsReport():
+    response=str(LS_backend.getTimestampsReport(mongo_reports))
+    return response
