@@ -1,5 +1,4 @@
-import threading
-
+from flask import json
 from flask import Flask, request
 import os
 
@@ -61,10 +60,10 @@ def submitEID():
 @app.route('/getReportByDate', methods=["GET"])
 def getReportByDate():
     date = int(request.args.get('date'))
-    response=str(LS_backend.getReportByDate(mongo_reports,date)).replace("'",'"')
+    response=json.jsonify(LS_backend.getReportByDate(mongo_reports,date))
     return response
 
 @app.route('/getTimestampsReport', methods=["GET"])
 def getTimestampsReport():
-    response=str(LS_backend.getTimestampsReport(mongo_reports)).replace("'",'"')
+    response=json.jsonify(LS_backend.getTimestampsReport(mongo_reports))
     return response
