@@ -41,10 +41,10 @@ class mongo_manager:
         return self.__get_coll__().find()
 
     def load_daily_report_legendary(self, file):
-        old_doc = self.__get_reports_coll__().find_one({"date_insert":str(datetime.date.today())})
+        old_doc = self.__get_reports_coll__().find_one({"date_insert":int(datetime.datetime.utcnow().timestamp())})
         if old_doc is not None:
-            self.__get_reports_coll__().delete_one({"date_insert":str(datetime.date.today())})
-        self.__get_reports_coll__().insert_one({"date_insert":str(datetime.date.today()),"report":file})
+            self.__get_reports_coll__().delete_one({"date_insert":int(datetime.datetime.utcnow().timestamp())})
+        self.__get_reports_coll__().insert_one({"date_insert":int(datetime.datetime.utcnow().timestamp()),"report":file})
         return {"success": True}
 
 
@@ -64,3 +64,6 @@ class mongo_manager:
             for el in legendary_players_list:
                 file["report"]["legendary_players"][el]=len(file["report"]["legendary_players"][el])
             return file
+
+    def get_timestamps_legendary_report(self):
+        return [el["date_insert"] for el in list(self.__get_reports_coll__().find({},{"date_insert":1,"_id":0}).sort("date_insert",-1))]

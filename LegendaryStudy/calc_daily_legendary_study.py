@@ -7,7 +7,7 @@ from mongoDB_manager import mongo_manager
 def get_dict_legendary_players(file_list):
     print("Starting get_dict_legendary_players")
     final_dict_legendary = {}
-    for el in tqdm(file_list):
+    for el in file_list:
         try:
             user_name=el["backup"]["userName"] if el["backup"]["userName"] is not None else "No alias"
             inventory_items = el["backup"]["artifactsDb"]["inventoryItems"]
@@ -28,7 +28,7 @@ def get_zlc_record(file_list, old_zlc_record):
     else:
         max_exthens = 0
     result=old_zlc_record
-    for el in tqdm(file_list):
+    for el in file_list:
         try:
             inventory_items = el["backup"]["artifactsDb"]["inventoryItems"]
             user_name=el["backup"]["userName"] if el["backup"]["userName"] is not None else "No alias"
@@ -47,7 +47,7 @@ def get_zlc_record(file_list, old_zlc_record):
 def legendary_seen(file_list):
     leg_seen={}
     print("Starting legendary_seen")
-    for x in tqdm(file_list):
+    for x in file_list:
         try:
             inventory_items = x["backup"]["artifactsDb"]["inventoryItems"]
             user_name=x["backup"]["userName"] if x["backup"]["userName"] is not None else "No alias"
