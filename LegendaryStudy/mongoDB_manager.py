@@ -41,10 +41,10 @@ class mongo_manager:
         return self.__get_coll__().find()
 
     def load_daily_report_legendary(self, file):
-        old_doc = self.__get_reports_coll__().find_one({"date_insert":str(datetime.date.today())})
+        old_doc = self.__get_reports_coll__().find_one({"date_insert":str(datetime.datetime.utcnow())})
         if old_doc is not None:
-            self.__get_reports_coll__().delete_one({"date_insert":str(datetime.date.today())})
-        self.__get_reports_coll__().insert_one({"date_insert":str(datetime.date.today()),"report":file})
+            self.__get_reports_coll__().delete_one({"date_insert":str(datetime.datetime.utcnow())})
+        self.__get_reports_coll__().insert_one({"date_insert":str(datetime.datetime.utcnow()),"report":file})
         return {"success": True}
 
 
