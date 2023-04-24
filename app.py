@@ -61,10 +61,10 @@ def submitEID():
 @app.route('/getReportByDate', methods=["GET"])
 def getReportByDate():
     date = int(request.args.get('date'))
-    response=str(LS_backend.getReportByDate(mongo_reports,date)).replace('"', "'")
+    response=str(LS_backend.getReportByDate(mongo_reports,date)).replace("'",'"')
     return response
 
 @app.route('/getTimestampsReport', methods=["GET"])
 def getTimestampsReport():
-    response=str(LS_backend.getTimestampsReport(mongo_reports)).replace('"', "'")
+    response=str(LS_backend.getTimestampsReport(mongo_reports)).replace("'",'"')
     return response
