@@ -63,9 +63,6 @@ class mongo_manager:
             legendary_players_list = file["report"]["legendary_players"]
             for el in legendary_players_list:
                 file["report"]["legendary_players"][el]=len(file["report"]["legendary_players"][el])
-            #sort
-            file["report"]["legendary_players"]={str(key):file["report"]["legendary_players"][str(key)] for key in sorted([int(el) for el in file["report"]["legendary_players"].keys()],reverse=True)}
-            file["report"]["leg_seen"]={r: file["report"]["leg_seen"][r] for r in sorted(file["report"]["leg_seen"], key=file["report"]["leg_seen"].get, reverse=True)}
             return file
 
     def get_timestamps_legendary_report(self):
