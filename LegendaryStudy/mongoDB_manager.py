@@ -31,10 +31,7 @@ class mongo_manager:
 
 
     def load_backup(self, backup):
-        old_doc=self.__get_coll__().find_one({"backup.eiUserId":backup["eiUserId"]})
-        if old_doc is not None:
-            self.__get_coll__().delete_one({"backup.eiUserId":backup["eiUserId"]})
-        self.__get_coll__().insert_one({"date_insert":str(datetime.datetime.now()),"backup":backup})
+        self.__get_coll__().replace_one({"backup.eiUserId":backup["eiUserId"]},{"date_insert":str(datetime.datetime.now()),"backup":backup},upsert=True)
         return {"success": True}
 
     def get_users_files(self):
@@ -67,3 +64,17 @@ class mongo_manager:
 
     def get_timestamps_legendary_report(self):
         return [el["date_insert"] for el in list(self.__get_reports_coll__().find({},{"date_insert":1,"_id":0}).sort("date_insert",-1))]
+
+    def delete_duplications(self):
+        agg_result = self.__get_coll__().aggregate(
+            [
+             {
+                "$group":
+                    {"_id": "$backup.eiUserId",
+                     "num_duplication": {"$sum": 1}
+                     }},
+                {"$match":
+                  {"num_duplication":
+                       {"$gt":1}}},
+            ])
+        return agg_result
