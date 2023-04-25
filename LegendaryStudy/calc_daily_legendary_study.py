@@ -67,7 +67,7 @@ final_dict_report={}
 mongo = mongo_manager()
 mongo_reports = mongo_manager(host="reports.dj5tz2b.mongodb.net")
 
-duplication=mongo.delete_duplications()
+#duplication=list(mongo.delete_duplications())
 
 old_file=mongo_reports.get_last_report_legendary()
 
