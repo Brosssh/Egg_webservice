@@ -1,5 +1,5 @@
 import datetime
-from datetime import timedelta
+from datetime import timedelta, datetime as dt2
 from pymongo import MongoClient
 import os
 
@@ -78,3 +78,16 @@ class mongo_manager:
                        {"$gt":1}}},
             ])
         return agg_result
+
+    def remove_old_users(self,days_limit):
+        print("Starting deletion old users (last update > "+str(days_limit)+" days ago)")
+        date_limit=datetime.datetime.now()-timedelta(days = days_limit)
+        try:
+            for el in self.__get_coll__().find():
+                if dt2.strptime(el["date_insert"],"%Y-%m-%d %H:%M:%S.%f")<date_limit:
+                    print("Deleting user id "+str(el["backup"]["eiUserId"])+" since last update date was "+str(el["date_insert"]))
+                    self.__get_coll__().delete_one({"_id":el["_id"]})
+        except Exception as e:
+            print("Exception during remove_old_users: "+str(e))
+        print("Deletion process completed")
+        return {"success": True}

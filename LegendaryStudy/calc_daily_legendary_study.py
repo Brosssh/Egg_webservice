@@ -68,6 +68,8 @@ mongo = mongo_manager()
 mongo_reports = mongo_manager(host="reports.dj5tz2b.mongodb.net")
 
 #duplication=list(mongo.delete_duplications())
+mongo.remove_old_users(30)
+
 
 old_file=mongo_reports.get_last_report_legendary()
 
