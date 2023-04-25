@@ -66,6 +66,9 @@ def legendary_seen(file_list):
 final_dict_report={}
 mongo = mongo_manager()
 mongo_reports = mongo_manager(host="reports.dj5tz2b.mongodb.net")
+
+#duplication=list(mongo.delete_duplications())
+
 old_file=mongo_reports.get_last_report_legendary()
 
 file_list = mongo.get_users_files()

@@ -31,10 +31,7 @@ class mongo_manager:
 
 
     def load_backup(self, backup):
-        old_doc=self.__get_coll__().find_one({"backup.eiUserId":backup["eiUserId"]})
-        if old_doc is not None:
-            self.__get_coll__().delete_one({"backup.eiUserId":backup["eiUserId"]})
-        self.__get_coll__().insert_one({"date_insert":str(datetime.datetime.now()),"backup":backup})
+        self.__get_coll__().replace_one({"backup.eiUserId":backup["eiUserId"]},{"date_insert":str(datetime.datetime.now()),"backup":backup},upsert=True)
         return {"success": True}
 
     def get_users_files(self):
@@ -63,10 +60,21 @@ class mongo_manager:
             legendary_players_list = file["report"]["legendary_players"]
             for el in legendary_players_list:
                 file["report"]["legendary_players"][el]=len(file["report"]["legendary_players"][el])
-            #sort
-            file["report"]["legendary_players"]={str(key):file["report"]["legendary_players"][str(key)] for key in sorted([int(el) for el in file["report"]["legendary_players"].keys()],reverse=True)}
-            file["report"]["leg_seen"]={r: file["report"]["leg_seen"][r] for r in sorted(file["report"]["leg_seen"], key=file["report"]["leg_seen"].get, reverse=True)}
             return file
 
     def get_timestamps_legendary_report(self):
         return [el["date_insert"] for el in list(self.__get_reports_coll__().find({},{"date_insert":1,"_id":0}).sort("date_insert",-1))]
+
+    def delete_duplications(self):
+        agg_result = self.__get_coll__().aggregate(
+            [
+             {
+                "$group":
+                    {"_id": "$backup.eiUserId",
+                     "num_duplication": {"$sum": 1}
+                     }},
+                {"$match":
+                  {"num_duplication":
+                       {"$gt":1}}},
+            ])
+        return agg_result
