@@ -41,7 +41,8 @@ class mongo_manager:
         return {"success": True}
 
     def get_users_files(self):
-        return self.__get_coll__().find()
+        #{"backup.LLC_calculated.value":{"$gte": 10}}
+        return self.__get_coll__().find({"banned": {"$exists": False}})
 
     def load_daily_report_legendary(self, file):
         old_doc = self.__get_reports_coll__().find_one({"date_insert":int(datetime.datetime.utcnow().timestamp())})
