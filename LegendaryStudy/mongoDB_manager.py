@@ -31,7 +31,7 @@ class mongo_manager:
 
 
     def load_backup(self, backup):
-        self.__get_coll__().update_one({"backup.eiUserId":backup["eiUserId"]},[{'$addFields': {"date_insert":str(datetime.datetime.now()),"backup":backup}}],upsert=True)
+        self.__get_coll__().replace_one({"backup.eiUserId":backup["eiUserId"]},{"date_insert":str(datetime.datetime.now()),"backup":backup},upsert=True)
         return {"success": True}
 
     def get_users_files(self):
