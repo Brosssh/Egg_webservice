@@ -21,6 +21,19 @@ def submitEID(mongo, EID):
                     shipsCountArchiveAR[el["ship"]+":"+el["durationType"]]+=1
             backup_dict["artifactsDb"]['shipsCountArchiveAR']=shipsCountArchiveAR
 
+            try:
+                total_crafts = backup_dict["artifactsDb"]["artifactStatus"]
+                expected_drop_l = int(shipsCountArchiveAR["HENERPRISE:EPIC"] if "HENERPRISE:EPIC"in shipsCountArchiveAR.keys() else 0) / 25 \
+                                  + int(shipsCountArchiveAR["HENERPRISE:LONG"] if "HENERPRISE:LONG"in shipsCountArchiveAR.keys() else 0) / (4.5 * 25) \
+                                  + int(shipsCountArchiveAR["HENERPRISE:SHORT"] if "HENERPRISE:SHORT"in shipsCountArchiveAR.keys() else 0) / (6 * 25)
+                expected_craft_l = sum(el["count"] for el in total_crafts if ("GREATER" in str(el["spec"]) and "LUNAR_TOTEM" not in str(el["spec"])) or ("TUNGSTEN_ANKH" in str(el["spec"]) and "NORMAL" in str(el["spec"]))) * 0.0085
+
+                inventory_items = backup_dict["artifactsDb"]["inventoryItems"]
+                count_l = int(sum(x["quantity"] for x in inventory_items if x["artifact"]["spec"]["rarity"] == "LEGENDARY"))
+                backup_dict["LLC_calculated"]={"valid":True,"value":count_l-expected_craft_l-expected_drop_l}
+            except Exception as e:
+                backup_dict["LLC_calculated"]={"valid":False,"value":"Invalid"}
+
             del backup_dict["artifactsDb"]['missionArchive']
             del backup_dict["contracts"]
             del backup_dict["tutorial"]
