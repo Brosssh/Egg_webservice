@@ -1,5 +1,7 @@
 import datetime
 from datetime import timedelta, datetime as dt2
+
+import pymongo
 from pymongo import MongoClient
 import os
 
@@ -31,7 +33,11 @@ class mongo_manager:
 
 
     def load_backup(self, backup):
-        self.__get_coll__().replace_one({"backup.eiUserId":backup["eiUserId"]},{"date_insert":str(datetime.datetime.now()),"backup":backup},upsert=True)
+        try:
+            self.__get_coll__().insert_one({"date_insert":str(datetime.datetime.now()),"backup":backup})
+        except pymongo.errors.DuplicateKeyError as e:
+            self.__get_coll__().update_one({"backup.eiUserId": backup["eiUserId"]},
+                                           {'$set':{"date_insert": str(datetime.datetime.now()), "backup": backup}})
         return {"success": True}
 
     def get_users_files(self):
