@@ -1,6 +1,5 @@
 name: RefreshLeaderboard
 
-
 on:
   schedule:
     - cron: "00 6 * * *"    #runs at 6:00 UTC everyday, 8 AM my timezone
