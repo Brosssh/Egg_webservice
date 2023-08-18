@@ -42,7 +42,7 @@ class mongo_manager:
 
     def get_users_files(self):
         #{"backup.LLC_calculated.value":{"$gte": 10}}
-        return self.__get_coll__().find({"$and":[{"banned": {"$exists": False}},{"backup.LLC_calculated.value":{"$lte": 40}}]})
+        return self.__get_coll__().find({"$and":[{"banned": {"$exists": False}},{"backup.LLC_calculated.value":{"$lte": 25}}]})
 
     def load_daily_report_legendary(self, file):
         old_doc = self.__get_reports_coll__().find_one({"date_insert":int(datetime.datetime.utcnow().timestamp())})
