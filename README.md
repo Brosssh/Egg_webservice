@@ -1,4 +1,4 @@
-# Egg Webservice
+# Egg webservice
 
 https://eggboard.netlify.app/ is the frontend site by courtesy of https://github.com/federico9292. 
 
