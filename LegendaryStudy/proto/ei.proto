@@ -1108,6 +1108,7 @@ message MissionInfo {
         CHICKFIANT = 7;
         VOYEGGER = 8;
         HENERPRISE = 9;
+        ATREGGIES = 10;
     }
 
     optional Status status = 2;
