@@ -41,8 +41,9 @@ class mongo_manager:
         return {"success": True}
 
     def get_users_files(self):
-        #{"backup.LLC_calculated.value":{"$gte": 10}}
-        return self.__get_coll__().find({"$and":[{"banned": {"$exists": False}},{"backup.LLC_calculated.value":{"$lte": 25}}]})
+        filters = {"$and": [{val: {"$in": [None, False]}} for val in ["backup.not_auth_leg", "backup.duped_leg", "banned"]] }
+        return self.__get_coll__().find(filters
+                                        ,{"backup.userName":1, "date_insert":1, "backup.artifactsDb":1, "backup.eiUserId":1})
 
     def load_daily_report_legendary(self, file):
         old_doc = self.__get_reports_coll__().find_one({"date_insert":int(datetime.datetime.utcnow().timestamp())})
