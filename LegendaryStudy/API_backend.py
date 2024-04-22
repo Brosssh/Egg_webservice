@@ -35,12 +35,14 @@ def submitEID(mongo, EID):
                 leg_arti_list = [x for x in inventory_items if x["artifact"]["spec"]["rarity"] == "LEGENDARY"]
 
                 any_no_id_leg = any(1 for x in leg_arti_list if not x["serverId"])
-
                 backup_dict["not_auth_leg"]=True if any_no_id_leg else False
 
 
                 any_duped_leg = any(x for x in leg_arti_list if x["quantity"] > 1)
                 backup_dict["duped_leg"]=True if any_duped_leg else False
+
+                any_ship_dupe = len(set([i["identifier"] for i in backup_dict["artifactsDb"]['missionArchive']])) != len([i["identifier"] for i in backup_dict["artifactsDb"]['missionArchive']])
+                backup_dict["any_ship_dupe"] = True if any_ship_dupe else False
 
                 count_l = int(sum(1 for x in inventory_items if x["artifact"]["spec"]["rarity"] == "LEGENDARY" and x["serverId"]))
                 backup_dict["LLC_calculated"]={"valid":True,"value":count_l-expected_craft_l-expected_drop_l}

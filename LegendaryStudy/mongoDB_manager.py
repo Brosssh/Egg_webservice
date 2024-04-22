@@ -41,7 +41,7 @@ class mongo_manager:
         return {"success": True}
 
     def get_users_files(self):
-        filters = {"$and": [{val: {"$in": [None, False]}} for val in ["backup.not_auth_leg", "backup.duped_leg", "banned"]] }
+        filters = {"$and": [{val: {"$in": [None, False]}} for val in ["backup.not_auth_leg", "backup.duped_leg", "banned", "any_ship_dupe"]] }
         return self.__get_coll__().find(filters
                                         ,{"backup.userName":1, "date_insert":1, "backup.artifactsDb":1, "backup.eiUserId":1})
 
