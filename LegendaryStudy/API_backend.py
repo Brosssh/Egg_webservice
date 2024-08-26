@@ -56,6 +56,9 @@ def submitEID(mongo, EID):
             del backup_dict["game"]["achievements"]
             del backup_dict["mission"]
             del backup_dict["farms"]
+            del backup_dict["shellDb"]
+            del backup_dict["shells"]
+            del backup_dict["settings"]
 
 
 
